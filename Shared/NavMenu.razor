@@ -22,6 +22,7 @@
                         {
                             <option value="@user.id" class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @user.name
+                                                           
                             </option>
                         
                         }
@@ -48,6 +49,7 @@
     private async Task HandleUserSelect()
     {
         await GetUser.InvokeAsync(selectedUserId);
+        Console.WriteLine(selectedUserId);
     }
     protected override async Task OnInitializedAsync()
     {

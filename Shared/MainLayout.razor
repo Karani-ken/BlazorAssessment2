@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
-<div style="margin:0 15%;">
-  <NavMenu  GetUser="HandleUserSelect"/>
+<div>
+  <NavMenu   GetUser="HandleUserSelect"/>
     <main>
         <article class="content px-4">        
           
@@ -15,5 +15,6 @@
     private void HandleUserSelect(int userId)
     {
         SelectedUserId = userId;
+        Console.WriteLine(SelectedUserId);
     }
 }
