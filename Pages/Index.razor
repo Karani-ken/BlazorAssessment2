@@ -1,0 +1,89 @@
+﻿@page "/"
+@inject IPostInterface postInterface
+@inject IUserInterface userInteface
+@inject ICommentInterface commentInterface
+@using BlazorAssessment2.Models;
+@using BlazorAssessment2.Services.IServices;
+
+<div class="row" >
+    <div class=" shadow col-2" style="border-radius:2%;">
+        <h1>My Profile</h1>
+        <div style="width:100%;">
+            <img src="https://cdn.pixabay.com/photo/2016/12/21/00/36/woman-1921883_1280.jpg" style="width:200px; height:200px; border-radius:100%;"/>
+            <div>
+                <!-- Display the selected user -->
+                @if (SelectedUserId != 0)
+                {
+                    <h3 class="text-danger">@GetName(SelectedUserId)</h3>
+                    <p>@GetUserName(SelectedUserId)</p>
+                }
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-6 p-5" style="height:90vh;overflow-y:scroll;">
+       @if(SelectedUserId != 0)
+        {
+                @foreach (var post in posts)
+                {
+                    <PostCard post="post" Users="Users" GetPostComments="SelectPost" />
+
+                }
+       
+        }
+        else
+        {
+                <p>Select User to view Posts !!</p>
+        }
+       
+      
+    </div>
+    
+        <div class="col-4 p-5" style="overflow:scroll; height:90vh;">
+            
+            @if (selectedPost != null)
+            {
+                <p>@selectedPost.title</p>
+              
+                @foreach (var comment in Comments)
+                {
+                    if (comment.postId == selectedPost.id)
+                    {
+                        <CommentCard comment="comment" Users="Users" />
+                    }
+                }
+            }
+        </div>
+    
+   
+</div>
+
+@code {
+    public List<Post> posts = new List<Post>();
+    public List<User> Users = new List<User>();
+    public List<Comment> Comments = new List<Comment>();
+    public Post selectedPost { get; set; }
+    private int SelectedUserId;
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await postInterface.GetPosts();
+        Users = await userInteface.GetUsers();
+        Comments = await commentInterface.GetComments();
+    }
+    public void SelectPost(Post post)
+    {
+        selectedPost = post;
+
+    }
+    public async Task<string> GetName(int id)
+    {
+        var user =  Users.FirstOrDefault(u => u.id == id);
+        return user != null ? user.name : "John Doe";
+    }
+    public string GetUserName(int id)
+    {
+        var user = Users.FirstOrDefault(u => u.id == id);
+        return user != null ? user.username : "JoeD";
+    }
+
+}

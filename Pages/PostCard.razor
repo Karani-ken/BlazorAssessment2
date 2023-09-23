@@ -1,0 +1,37 @@
+﻿@using BlazorAssessment2.Models;
+
+<div class="card border-info mb-3 p-3 shadow-lg" style="width:100%;">
+    <div class="card-header">
+        @foreach(var user in Users)
+        {
+            if(user.id == post.userId)
+            {
+                @user.username;
+            }
+        }
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">@post.title</h5>
+        <p class="card-text">@post.body</p>
+    </div>
+    <button class="btn btn-primary" @onclick="(()=>GetComments(post))"> View Comments</button>
+</div>
+
+@code {
+    [Parameter]
+    public Post post { get; set; }
+    [Parameter]
+    public List<User> Users { get; set; }
+    [Parameter]
+    public List<Comment> comments { get; set; }
+
+    [Parameter]
+    public EventCallback<Post> GetPostComments { get; set; }
+
+    public async Task GetComments(Post post)
+    {
+        await GetPostComments.InvokeAsync(post);
+    }
+
+
+}

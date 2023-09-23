@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<div style="margin:0 15%;">
+  <NavMenu  GetUser="HandleUserSelect"/>
+    <main>
+        <article class="content px-4">        
+          
+        @Body
+        </article>
+    </main>
+</div>
+@code{
+    private int SelectedUserId;
+
+    private void HandleUserSelect(int userId)
+    {
+        SelectedUserId = userId;
+    }
+}
